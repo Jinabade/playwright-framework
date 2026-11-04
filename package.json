@@ -2,8 +2,9 @@
 {
   "name": "playwright-framework",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright TypeScript Automation Framework",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test:api": "playwright test --grep @api",
     "test:web": "playwright test --grep @web",
@@ -16,7 +17,6 @@
     "test:sanity:debug": "playwright test --grep @sanity --debug"
   },
   "keywords": [],
-  "type": "module",
   "devDependencies": {
     "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.6",
