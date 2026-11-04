@@ -1,6 +1,6 @@
 
 import { Page, Locator, expect } from '@playwright/test';
-import { CustomerRegistration } from '../../pages/mycustomerreg';
+import { CustomerRegistration } from './mycustomerreg.js';
 export class mypage {
   private readonly firstname: Locator;
   private readonly lastname: Locator;

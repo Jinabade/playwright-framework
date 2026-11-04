@@ -8,7 +8,7 @@ import { CustomerRegistration } from '../../pages/mycustomerreg.js';
 import { randomdata } from '../../utils/fakerdatagenerator.js';
 import { searchpage } from '../../pages/myproductpage.js';
 
-import productData from '../../testdata/productData.json';
+import productData from '../../testdata/productData.json' with { type: 'json' };
 
 test('Verify OpenCart customer registration', async ({ page }) => {
   const myhomepage = new MyHomePage(page);

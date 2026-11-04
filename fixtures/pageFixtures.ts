@@ -2,10 +2,10 @@
 import { test as base, expect } from '@playwright/test';
 import dotenv from 'dotenv';
 
-import { HomePage } from '../pages/HomePage';
-import { AccountPage } from '../pages/AccountPage';
-import { ProductPage } from '../pages/ProductPage';
-import { CartPage } from '../pages/CartPage';
+import { HomePage } from '../pages/HomePage.js';
+import { AccountPage } from '../pages/AccountPage.js';
+import { ProductPage } from '../pages/ProductPage.js';
+import { CartPage } from '../pages/CartPage.js';
 
 dotenv.config();
 

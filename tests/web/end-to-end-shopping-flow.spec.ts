@@ -1,8 +1,8 @@
 
-import { test, expect } from '../../fixtures/pageFixtures';
-import { RandomDataUtil } from '../../utils/dataGenerator';
-import { CustomerRegistration } from '../../pages/AccountPage';
-import { Helper } from '../../utils/helper';
+import { test, expect } from '../../fixtures/pageFixtures.js';
+import { RandomDataUtil } from '../../utils/dataGenerator.js';
+import { CustomerRegistration } from '../../pages/AccountPage.js';
+import { Helper } from '../../utils/helper.js';
 
 test('End-to-End Shopping Flow @master @end-to-end', async ({
   homePage,

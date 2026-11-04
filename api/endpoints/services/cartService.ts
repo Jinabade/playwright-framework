@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { APIRequestContext } from '@playwright/test';
-import { routes } from '../routes';
+import { routes } from '../routes.js';
 
 export class cartService {
 
