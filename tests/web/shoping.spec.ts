@@ -10,102 +10,66 @@ import { searchpage } from '../../pages/myproductpage.js';
 
 import productData from '../../testdata/productData.json' with { type: 'json' };
 
-test('Verify OpenCart customer registration', async ({ page }) => {
-  const myhomepage = new MyHomePage(page);
-  const registrationpage = new mypage(page);
-  const fakerdata = new randomdata();
-   const myproductpage = new searchpage(page);  
+test('Verify OpenCart customer registration and shopping flow @e2e', async ({ page }) => {
 
-   const mycard=new shopingcard(page);
+    const myhomepage = new MyHomePage(page);
+    const registrationpage = new mypage(page);
+    const fakerdata = new randomdata();
+    const myproductpage = new searchpage(page);
+    const mycard = new shopingcard(page);
 
-  // Step 1: Open homepage
-  await myhomepage.openhomepage();
-  await myhomepage.verifheading();
+    // Step 1: Open Home Page
+    await myhomepage.openhomepage();
+    await myhomepage.verifheading();
 
-  // Step 2: Open registration page
-  await myhomepage.openmyaccount();
-  await myhomepage.openregistration();
+    // Step 2: Registration
+    await myhomepage.openmyaccount();
+    await myhomepage.openregistration();
+    await registrationpage.verifyregistrationpage();
 
-  // Step 3: Verify registration page
-  await registrationpage.verifyregistrationpage();
+    const firstName = fakerdata.getFirstName();
+    const lastName = fakerdata.getLastName();
+    const email = fakerdata.getEmail();
+    const password = fakerdata.getPassword();
 
-  // Step 4: Generate customer data
-  const firstName = fakerdata.getFirstName();
-  const lastName = fakerdata.getLastName();
-  const email = fakerdata.getEmail();
-  const password = fakerdata.getPassword();
+    const customerreg = new CustomerRegistration(
+        firstName,
+        lastName,
+        email,
+        password
+    );
 
-  // Step 5: Create CustomerRegistration object
-  const customerreg = new CustomerRegistration(
-    firstName,
-    lastName,
-    email,
-    password
-  );
-
-  // Step 6: Fill registration form
-  await registrationpage.fillregistrationform(customerreg);
-
-  // Step 7: Submit registration form
-  await registrationpage.submitregistrationform();
-
-  // Step 8: Verify successful registration
+    await registrationpage.fillregistrationform(customerreg);
+    await registrationpage.submitregistrationform();
     await registrationpage.accountverify();
 
-  // Step 9: Click on the MY Account
- 
-   myhomepage.openmyaccount();
+    // Step 3: Logout
+    await myhomepage.openmyaccount();
+    await registrationpage.logoutbtaccount();
 
-  //step 10: Logout from the accou
+    // Step 4: Login
+    await registrationpage.loginpage();
+    await registrationpage.logindata(customerreg);
+    await registrationpage.submitloginform();
 
-  await registrationpage.logoutbtaccount();
+    await expect(page).toHaveURL(/route=account\/account/);
+    await expect(page.locator('h1')).toHaveText('My Account');
 
-//  step 11: verify login page is displayed
-  await registrationpage.loginpage();
+    // Step 5: Search Product
+    const productname = productData.productname;
 
-  //step 12: fill login data
-  await registrationpage.logindata(customerreg);
+    await myproductpage.searchproduct(productname);
+    await myproductpage.searchproductverify(productname);
 
- 
-  
-  // Step 13: Submit login form
-  await registrationpage.submitloginform();
+    // Step 6: Add Product to Cart
+    await myproductpage.addproducttocart();
 
-  // Step 14: Verify login successful
-  await expect(page).toHaveURL(/route=account\/account/);
+    // Step 7: Open Shopping Cart
+    await myproductpage.viewcardpage();
 
-  // Sirf page ka main H1 verify karo, footer ka H5 nahi
-  await expect(
-    page.locator('h1')
-  ).toHaveText('My Account');
+    // Step 8: Verify Cart
+    await mycard.verifycartheading();
+    await mycard.verifyProductname();
+    await mycard.verifyproductprice();
 
-  console.log('Login successful');
-
-  // Step 15: Search product AFTER login verification
-  const productname = productData.productname;
-
-  await myproductpage.searchproduct(productname);
-
-  // Step 16: Verify search result heading
-  await expect(
-    page.locator('h1')
-  ).toHaveText(`Search - ${productname}`);
-
-  console.log(`Search successful: ${productname}`);
-
-// Step 17: Verify product is visible in search results
-  await myproductpage.searchproductverify(productname);
-
-  // step 18: Add product to cart
-
-  await myproductpage.addproducttocart();
-
-// view card page 
-await myproductpage.viewcardpage();
-
- // verify product 
- mycard.verifyProductname();
-mycard.verifyproductprice();
-
- await page.waitForTimeout(5000);
-})
+});

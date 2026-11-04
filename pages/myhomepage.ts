@@ -24,9 +24,15 @@ export class MyHomePage {
     });
   }
 
-  async openhomepage(): Promise<void> {
-    await this.page.goto('http://localhost/opencard/upload/');
+async openhomepage(): Promise<void> {
+  const url = process.env.WEB_APP_URL;
+
+  if (!url) {
+    throw new Error('WEB_APP_URL is missing in .env file');
   }
+
+  await this.page.goto(url);
+}
 
   async verifheading(): Promise<void> {
     await expect(this.headingfeature).toBeVisible();

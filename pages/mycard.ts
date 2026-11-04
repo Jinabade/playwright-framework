@@ -30,16 +30,17 @@ export class shopingcard {
     this.checkout= page.getByRole('link',{name:'Checkout',exact:true}).last();
   }
 
-  async verifycartheading(): Promise<void> {
-    await expect(this.heading).toBeVisible();
+async verifycartheading(): Promise<void> {
+  await expect(this.heading).toBeVisible();
 
-    await expect(this.heading).toHaveText(
-      'Shopping Cart (0.00kg)',
-      { timeout: 10000 }
-    );
+  await expect(this.heading).toHaveText(
+    'Shopping Cart (0.00kg)',
+    { timeout: 10000 }
+  );
 
-    await expect(this.page).toHaveURL(/route=checkout\/cart/);
-  }
+  await expect(this.page).toHaveURL(/route=checkout\/cart/);
+}
+
 
   async verifyProductname(): Promise<void> {
     await expect(this.product).toBeVisible();
